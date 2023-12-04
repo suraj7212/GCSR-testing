@@ -1,5 +1,17 @@
 steps:
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
-  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
-timeout: '1600s'
+  # Build the .NET application
+  - name: 'mcr.microsoft.com/dotnet/core/sdk:latest'
+    entrypoint: 'dotnet'
+    args: ['publish', '-c', 'Release', '-o', '$$BUILD_DIR/publish']
+ 
+  # Deploy to App Engine
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'app'
+      - 'deploy'
+      - '--image-url=gcr.io/$PROJECT_ID/my-dotnet-app'
+      - '--version=latest'
+      - '--project=$PROJECT_ID'
+      - '--quiet'
+      - 'app.yaml'  # Replace with your app.yaml file name
+    dir: '$$BUILD_DIR/publish'
