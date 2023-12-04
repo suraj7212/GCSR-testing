@@ -1,2 +1,3 @@
 # GCSR-testing
-For testing purpose only
+For testing purposes only
+Mirroring of GitHub repository.
