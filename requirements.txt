@@ -1,2 +1,1 @@
-# Function dependencies, for example:
-# package>=version
+Flask==3.0.0
